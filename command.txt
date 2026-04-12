@@ -1,1 +1,2 @@
 DATABASE_URL = "postgresql://postgres:yacine@localhost/students"
+python -m uvicorn main:app --reload
