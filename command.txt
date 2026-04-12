@@ -5,5 +5,22 @@ password: yacine
 host: localhost
 database: students
 
+--------- post request --------------------
+final response = await http.post(
+        Uri.parse("$baseUrl/students"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "name": nameController.text.trim(),
+          "age": int.parse(ageController.text),
+          "group": int.parse(groupController.text),
+        }),
+---------- get request ---------------
+final response = await http.get(Uri.parse("$baseUrl/students"));
+      if (response.statusCode == 200) {
+        final List data = jsonDecode(response.body);
+        setState(() {
+          students = data.map((e) => Map<String, dynamic>.from(e)).toList();
+        });
+
 
 python -m uvicorn main:app --reload
