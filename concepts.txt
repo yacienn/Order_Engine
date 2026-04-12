@@ -1,0 +1,6 @@
+Authentication (JWT)
+File uploads
+API design (REST structure)
+Error handling
+Middleware
+Clean architecture
