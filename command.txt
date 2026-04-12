@@ -1,2 +1,9 @@
 DATABASE_URL = "postgresql://postgres:yacine@localhost/students"
+final String baseUrl = "http://127.0.0.1:8000";
+username: postgres
+password: yacine
+host: localhost
+database: students
+
+
 python -m uvicorn main:app --reload
