@@ -1,20 +1,26 @@
-import {OrderProcessing} from './OrderProcessor.ts'
+import { OrderProcessing } from './OrderProcessor.ts';
 
 const processor = new OrderProcessing();
+
 processor.addOrder({ id: 1, name: "Laptop", price: 1200 });
 processor.addOrder({ id: 2, name: "Phone", price: 800 });
 processor.addOrder({ id: 3, name: "Keyboard", price: 100 });
 
 processor.showOrders();
 
-const intervalId = setInterval(() => {
-   processor.processOrder();
-   console.log("\n");
-   if (processor.noOrder()) {
-      console.log("No more orders");
-      clearInterval(intervalId);
-      return;
+async function main() {
+   try{
+     
+      while(true){
+          const result = await processor.processOrder();
+          console.log(result);
+           console.log("\n");
+          processor.showOrders();
+      }
+   }catch(e){
+      console.log(e);
    }
-   processor.showOrders();
-}, 1800);
+   console.log("End");
+}
 
+main()
