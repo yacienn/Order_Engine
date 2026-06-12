@@ -1,6 +1,8 @@
 import type { Order } from "./Order.ts";
 import { Queue } from "./Queue.ts";
 import { Status } from './Order.ts';
+import type { Worker } from './Worker.ts';
+import { Wstatus } from './Worker.ts';
 
 export class OrderProcessing{
   private queue = new Queue<Order>();
@@ -10,7 +12,7 @@ export class OrderProcessing{
     console.log(`The order which contains ${order.id} - ${order.name} - ${order.price} was Added!`);
   }
 
-  processOrder(): Promise<string | null>{
+  processOrder(worker : Worker): Promise<string | null>{
     return new Promise((resolve, reject) => {
       const order = this.queue.dequeue();
       if (!order) {
@@ -18,18 +20,19 @@ export class OrderProcessing{
         return;
       }
       order.status = Status.PROCESSING;
-      console.log(`Order ${order.id} status : ${order.status}`);
-
+      worker.status = Wstatus.BUSY;
+      console.log(`${worker.name} Order ${order.id} status : ${order.status} ---- ${worker.name} ${worker.status}` );
       setTimeout(() => {
         order.status = Status.COMPLETED;
-        console.log(`Order ${order.id} status changed to: ${order.status}`); 
+        worker.status = Wstatus.IDLE;
+       
+        console.log(`Order ${order.id} status changed to: ${order.status} ---${worker.name}+ ${worker.status} `); 
         resolve(
           `Order ${order.id} - ${order.name} - ${order.price}  - ${order.status} `
         );
       }, 3500);
     });
   }
-
   showOrders(): void{
     const orders = this.queue.getAll();
     console.log("------------------\nPending orders:\n");
